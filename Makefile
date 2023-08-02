@@ -6,7 +6,7 @@
 #    By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 11:51:51 by cyacoub-          #+#    #+#              #
-#    Updated: 2023/07/11 14:18:11 by cyacoub-         ###   ########.fr        #
+#    Updated: 2023/08/02 15:50:31 by cyacoub-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRCS =	builtins/echo.c builtins/env.c builtins/exit.c builtins/pwd.c \
 		builtins/unset.c parsing/env_utils.c parsing/errors.c parsing/errors2.c\
 		parsing/free.c parsing/get_cmd.c parsing/get_env.c parsing/path.c \
 		parsing/str_check.c parsing/token.c parsing/token2.c \
-		parsing/trim_vars.c minishell.c signals.c
+		parsing/trim_vars.c minishell.c signals.c builtins/cd.c \
+		builtins/export.c
 
 SRC_BONUS =	
 #SRCS = $(addprefix $(SRC_PATH), $(SRC))

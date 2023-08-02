@@ -6,7 +6,7 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:45:10 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/11 14:31:36 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:49:21 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ void	exit_arg(t_cmd *cmd);
 int		builtin_exit(t_cmd *cmd, t_env **envs);
 int		builtin_pwd(t_cmd *cmd, t_env **envs);
 int		builtin_unset(t_cmd *cmd, t_env **envs);
+int		builtin_cd(t_cmd *cmd, t_env **envs);
+int		builtin_export(t_cmd *cmd, t_env **envs);
+void	error_identifier(char *identifier);
 //==================parsing==================//
 char	**format_env(t_env *envs);
 bool	handle_unexpected(char ***tokens);
