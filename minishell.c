@@ -6,13 +6,32 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:44:58 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/11 14:35:12 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/08/07 18:32:43 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_minishell	g_minishell;
+
+/* static void printtokens(t_cmd **cmds)
+{
+	t_cmd *aux = *cmds;
+	int i = 0;
+	while (aux){
+		printf("--------------\n");
+		printf("cabeza = %s\n", aux->name);
+		i = 0;
+		while(aux->args[i])
+		{
+			printf("argumentos[%d] = %s\n", i, aux->args[i]);
+			i++;
+		}
+		printf("--------------\n");
+		i++;
+		aux = aux->next;
+		}
+} */
 
 static t_env	*init_envs(char **envp)
 {
@@ -102,6 +121,7 @@ static int	program(t_cmd **cmds, t_env **envs)
 		if (*cmds)
 		{
 			set_env(envs, "_", ft_strdup(last_cmd_arg(*cmds)));
+			//printtokens(cmds);
 			//exit_status = ejecutar comando;
 		}
 		if (g_minishell.signal > 0)

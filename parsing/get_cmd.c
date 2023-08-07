@@ -6,7 +6,7 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:18:33 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/11 17:06:24 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/08/07 18:32:02 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,6 @@ static char	**init_args(t_cmd *cmd, char **tokens, size_t start, size_t end)
 	i = 0;
 	while (start + i < end)
 	{
-		if (tokens[start + i][0] == '>' || tokens[start + i][0] == '<')
-		{
-			if (printf("iniciar las redirecciones\n"))
-			{
-				while (i > 0)
-					free(args[--i]);
-				free(args);
-				return (NULL);
-			}
-			start += 2;
-			continue ;
-		}
 		args[i] = ft_strdup(tokens[start + i]);
 		i++;
 	}
