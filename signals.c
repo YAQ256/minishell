@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 14:34:30 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/10 14:34:47 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:29:40 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,31 @@ void	main_signal(int signal)
 	}
 }
 
-void	heredoc_signal(int signal)
+void	sig_heredoc(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	sig_child(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	sig_parent(void)
+{
+	signal(SIGINT, main_signal);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	sig_ignore(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+/* void	heredoc_signal(int signal)
 {
 	g_minishell.signal = signal;
 	g_minishell.heredoc = true;
@@ -48,4 +72,4 @@ void	cmd_signal(int signal)
 	{
 		ft_putendl_fd("Quit", STDERR_FILENO);
 	}
-}
+} */

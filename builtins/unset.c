@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:38 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/10 11:14:54 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:31:55 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	builtin_unset(t_cmd *cmd, t_env **envs)
 	while (cmd->args[i])
 	{
 		if (!remove_env(envs, cmd->args[i]))
-			return (EXIT_FAILURE);
+			return (0);
 		i++;
 	}
 	return (EXIT_SUCCESS);

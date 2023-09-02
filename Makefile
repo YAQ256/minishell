@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+         #
+#    By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 11:51:51 by cyacoub-          #+#    #+#              #
-#    Updated: 2023/08/02 15:50:31 by cyacoub-         ###   ########.fr        #
+#    Updated: 2023/09/02 08:28:45 by saazcon-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,10 @@ SRCS =	builtins/echo.c builtins/env.c builtins/exit.c builtins/pwd.c \
 		parsing/free.c parsing/get_cmd.c parsing/get_env.c parsing/path.c \
 		parsing/str_check.c parsing/token.c parsing/token2.c \
 		parsing/trim_vars.c minishell.c signals.c builtins/cd.c \
-		builtins/export.c
+		exec/exec.c exec/utils.c exec/redir.c exec/break.c \
+		builtins/builtin.c builtins/export/export.c \
+		builtins/export/export_utils.c builtins/export/export_utils2.c \
+		exec/utils2.c exec/heredoc.c
 
 SRC_BONUS =	
 #SRCS = $(addprefix $(SRC_PATH), $(SRC))

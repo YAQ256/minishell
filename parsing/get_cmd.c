@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:18:33 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/08/07 18:32:02 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:33:13 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,15 @@ t_cmd	*new_cmd(char **tokens, size_t start, size_t end)
 {
 	t_cmd	*cmd;
 
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	cmd = (t_cmd *)ft_calloc(sizeof(t_cmd), 1); //cambie el tipo de reserva
 	if (!cmd)
 		return (NULL);
-	cmd->infile = -1;
-	cmd->outfile = -1;
-	cmd->has_heredoc = false;
 	cmd->has_pipe = false;
-	cmd->pid = -1;
 	cmd->next = NULL;
 	cmd->args = init_args(cmd, tokens, start, end);
 	if (!cmd->args || !cmd->args[0])
 		return (free_cmds(cmd), NULL);
-	cmd->name = cmd->args[0];
+	cmd->name_cmd = cmd->args[0];
 	return (cmd);
 }
 
@@ -84,7 +80,6 @@ void	free_cmds(t_cmd *cmds)
 	t_cmd	*tmp;
 	size_t	i;
 
-	//printf("cerrar redirecciones\n");
 	while (cmds)
 	{
 		tmp = cmds;
@@ -97,3 +92,33 @@ void	free_cmds(t_cmd *cmds)
 		free(tmp);
 	}
 }
+
+/* void	ft_free_lst_cmd(t_cmd **cmds, char **envp)
+{
+	struct s_cmd	*n;
+	struct s_cmd	*aux;
+
+	n = *cmds;
+	if (envp)
+		ft_free_double(envp);
+	while (n)
+	{
+		if (n->args)
+			ft_free_double(n->args);
+		if (n->cmd)
+			ft_free_double(n->cmd);
+		if (n->infile)
+			ft_free_double(n->infile);
+		if (n->outfile)
+			ft_free_double(n->outfile);
+		if (n->dl_hd)
+			ft_free_double(n->outfile);
+		if (n->pth_hd)
+			free(n->pth_hd);
+		if (n->name_cmd)
+			free(n->name_cmd);
+		aux = n;
+		n = n->next;
+		free(aux);
+	}
+} */

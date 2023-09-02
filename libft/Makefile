@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+         #
+#    By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 12:15:03 by cyacoub-          #+#    #+#              #
-#    Updated: 2023/07/11 14:24:36 by cyacoub-         ###   ########.fr        #
+#    Updated: 2023/09/02 08:33:31 by saazcon-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ SRC =	ft_atoi.c\
 		ft_lstmap.c\
 		ft_strcmp.c\
 		ft_atoll.c\
+		ft_memdel.c\
 
 OBJS = ${SRC:.c=.o}
 ## COLORS ##

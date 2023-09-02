@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 19:01:23 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/11 14:28:40 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:32:47 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 # define RED     "\x1b[31m"
 # define RESET   "\x1b[0m"
+# include "../minishell.h"
 # include <unistd.h>
 # include <stddef.h>
 # include <stdlib.h>
@@ -77,5 +78,6 @@ int			ft_isspace(char c);
 void		ft_swap(int *a, int *b);
 int			ft_strcmp(const char *s1, const char *s2);
 long long	ft_atoll(const char *str);
+void		*ft_memdel(void *ptr);
 
 #endif
