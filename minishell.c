@@ -6,7 +6,7 @@
 /*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:44:58 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 08:30:51 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:11:00 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,10 +132,10 @@ static int	program(t_cmd **cmds, t_env **envs)
 	return (g_minishell.exit_status);
 }
 
-void	ft_leaks(void)
-{
-	system("leaks -q minishell");
-}
+// void	ft_leaks(void)
+// {
+// 	system("leaks -q minishell");
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -144,7 +144,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	atexit(ft_leaks);
+	// atexit(ft_leaks);
 	g_minishell.force_exit = false;
 	g_minishell.signal = 0;
 	g_minishell.heredoc = false;

@@ -6,24 +6,65 @@
 /*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 17:35:56 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/02 06:36:34 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:24:32 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-/* void	ft_breack_check(struct s_cmd *ps)
+int	ft_check_path(t_cmd *ps, char **envp)
 {
-	if (ps->cmd && !ps->cmd[0])
-		//g_minishell.exit_status = 127;
+	int		i;
+	char	**env_path;
+	char	*path;
+	char	*path_cmd;
+	
+	i = ft_path(envp);
+	env_path = ft_split(envp[i] + 5, ':');
+	i = -1;
+	while (env_path[++i])
+	{
+		path = ft_strjoin(env_path[i], "/");
+		path_cmd = ft_strjoin(path, ps->cmd[0]);
+		free(path);
+		if (access(path_cmd, X_OK) == 0)
+		{
+			ps->pth_cmd = ft_strdup(path_cmd);
+			free(path_cmd);
+			ft_free_double(env_path);
+			return (0); //exit
+		}
+		free(path_cmd);
+	}
+	ft_free_double(env_path);
+	return (1); //fail
+}
+
+int	ft_check_cmd(struct s_cmd *ps, char **envp)
+{
+	if (access(ps->cmd[0], X_OK) != 0)
+		return (ft_check_path(ps, envp));
+	else
+	{
+		ps->pth_cmd = ft_strdup(ps->cmd[0]);
+		if (!ps->pth_cmd)
+			return (1); //mejorable
+		return (0);
+	}
+}
+
+void	ft_breack_check(struct s_cmd *ps, char **envp)
+{
+	if ((ps->cmd && !ps->cmd[0]) || (ft_check_cmd(ps, envp) != 0))
+		error_st(ps->name_cmd, "command not found", 127);
 	if (ps->infile && (!ps->infile[0] || !ps->infile[1]))
-		//g_minishell.exit_status = 127;
+		perror ("falla el infile");//g_minishell.exit_status = 127;
 	if (ps->outfile && (!ps->outfile[0] || !ps->outfile[1]))
-		//g_minishell.exit_status = 127;
+		perror ("falla el outfile");//g_minishell.exit_status = 127;
 	if (ps->infile && ps->infile[0][1] == '<' && ps->infile[0][0] == '<')
 		if (ps->dl_hd && !ps->dl_hd[0])
-			//g_minishell.exit_status = 127;
-} */
+			perror ("falla el heredoc, el dl");//g_minishell.exit_status = 127;		
+}
 
 void	ft_break_dl(struct s_cmd *ps, int *i)
 {
@@ -76,7 +117,7 @@ void	ft_break_redir(struct s_cmd *ps, char **args, int *i) //no se para que esta
 		ft_break_redir(ps, args, i);
 }
 
-void	ft_break_down(struct s_cmd *ps)
+void	ft_init_break(struct s_cmd *ps, char **envp)
 {
 	char	*aux;
 	int		i;
@@ -100,9 +141,9 @@ void	ft_break_down(struct s_cmd *ps)
 			}
 		}
 		ps->cmd = ft_split(aux, 32);
-		//ft_breack_check(ps);
-		ps = ps->next;
 		free(aux);
+		ft_breack_check(ps, envp);
+		ps = ps->next;
 	}
 }
 
