@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 14:27:54 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/10 14:28:09 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:32:24 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static bool	check_tokens(char **tokens, int i)
 					|| tokens[i - 1][0] == '<'))
 				return (error_unexpected("|", 1), false);
 			if ((tokens[i][0] == '<' || tokens[i][0] == '>') && !tokens[i + 1])
-				return (error_unexpected("newline", 7), false);
+				return (true);
 			if ((tokens[i][0] == '<' || tokens[i][0] == '>') && tokens[i + 1]
 				&& (tokens[i + 1][0] == '<' || tokens[i + 1][0] == '>'))
 				return (error_unexpected(tokens[i + 1], 1), false);
@@ -59,7 +59,7 @@ static bool	check_newline(char **tokens)
 		{
 			if (!tokens[i + 1] || (tokens[i][0] == '<'
 				&& tokens[i + 1][0] == '>'))
-				return (error_unexpected("newline", 7), false);
+				return (true);
 		}
 		i++;
 	}

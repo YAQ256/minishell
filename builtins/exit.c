@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:21:44 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/06 16:22:18 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:31:46 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	verify_args(char **args)
 		while (args[i][j])
 		{
 			if (!ft_isdigit(args[i][j]))
-				return (error_numerical_arg(args[i]), 2);
+				return (error_numerical_arg(args[i]), 255);
 			j++;
 		}
 		if (args[i + 1])
@@ -90,7 +90,7 @@ int	builtin_exit(t_cmd *cmd, t_env **envs)
 	if (verify_status != EXIT_SUCCESS)
 		return (verify_status);
 	if (cmd->args[1] && is_overflowing(cmd->args[1]))
-		return (error_numerical_arg(cmd->args[1]), 2);
+		return (error_numerical_arg(cmd->args[1]), 255);
 	if (cmd->args[1])
 		exit_arg(cmd);
 	return (EXIT_SUCCESS);

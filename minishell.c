@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:44:58 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/08/07 18:32:43 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:30:51 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 t_minishell	g_minishell;
 
-/* static void printtokens(t_cmd **cmds)
-{
-	t_cmd *aux = *cmds;
-	int i = 0;
-	while (aux){
-		printf("--------------\n");
-		printf("cabeza = %s\n", aux->name);
-		i = 0;
-		while(aux->args[i])
-		{
-			printf("argumentos[%d] = %s\n", i, aux->args[i]);
-			i++;
-		}
-		printf("--------------\n");
-		i++;
-		aux = aux->next;
-		}
-} */
+// static void printtokens(t_cmd **cmds)
+// {
+// 	t_cmd *aux = *cmds;
+// 	int i = 0;
+// 	while (aux){
+// 		printf("--------------\n");
+// 		printf("cabeza = %s\n", aux->name_cmd);
+// 		i = 0;
+// 		while(aux->args[i])
+// 		{
+// 			printf("argumentos[%d] = %s\n", i, aux->args[i]);
+// 			i++;
+// 		}
+// 		printf("--------------\n");
+// 		i++;
+// 		aux = aux->next;
+// 		}
+// }
 
 static t_env	*init_envs(char **envp)
 {
@@ -78,7 +78,7 @@ static t_cmd	*init_cmds(char **tokens)
 	if (tokens[start])
 		add_cmd(&cmds, new_cmd(tokens, start, i));
 	if (cmds && cmds->next)
-		printf("si la pipe es verdadero\n");
+		cmds_has_pipes(cmds);
 	return (cmds);
 }
 
@@ -88,7 +88,7 @@ static bool	readentry(t_env **envs, t_cmd **cmds)
 	char	**tokens;
 
 	*cmds = NULL;
-	line = readline("minishell-0.9.2$ ");
+	line = readline("minishell-0.9.3$ ");
 	if (!line)
 		return (false);
 	add_history(line);
@@ -108,48 +108,51 @@ static bool	readentry(t_env **envs, t_cmd **cmds)
 
 static int	program(t_cmd **cmds, t_env **envs)
 {
-	int		exit_status;
-
-	exit_status = 0;
 	while (1)
 	{
-		signal(SIGINT, &main_signal);
-		signal(SIGQUIT, SIG_IGN);
-		rl_getc_function = rl_getc;
+		sig_parent();
+		//rl_getc_function = rl_getc; NO SE PARA QUE ES ESTA LINEA
 		if (!readentry(envs, cmds))
 			break ;
 		if (*cmds)
 		{
 			set_env(envs, "_", ft_strdup(last_cmd_arg(*cmds)));
-			//printtokens(cmds);
-			//exit_status = ejecutar comando;
+			// printtokens(cmds);
+			//Parte Salva:
+			ft_init_exec(cmds, envs); //hay que poner el init exec como int y meter que retorne el exit status y meterlo en esa variable
 		}
 		if (g_minishell.signal > 0)
-			exit_status = 128 + g_minishell.signal;
-		set_env(envs, "?", ft_itoa(exit_status));
-		if (g_minishell.force_exit /*|| es proceso hijo*/)
-			return (free_cmds(*cmds), exit_status);
+			g_minishell.exit_status = 128 + g_minishell.signal;
+		set_env(envs, "?", ft_itoa(g_minishell.exit_status));
+		if (g_minishell.force_exit /* || is_child_process(*cmds) */)
+			return (free_cmds(*cmds), g_minishell.exit_status);
 		free_cmds(*cmds);
 		g_minishell.signal = 0;
 	}
-	return (exit_status);
+	return (g_minishell.exit_status);
+}
+
+void	ft_leaks(void)
+{
+	system("leaks -q minishell");
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_cmd	*cmds;
-	int		exit_status;
 	t_env	*tmp;
 
 	(void)argc;
 	(void)argv;
+	atexit(ft_leaks);
 	g_minishell.force_exit = false;
 	g_minishell.signal = 0;
 	g_minishell.heredoc = false;
 	g_minishell.envs = init_envs(envp);
-	exit_status = program(&cmds, &g_minishell.envs);
+	// increment_shell_level(g_minishell.envs);
+	g_minishell.exit_status = program(&cmds, &g_minishell.envs);
 	if (g_minishell.signal > 0)
-		exit_status = 128 + g_minishell.signal;
+		g_minishell.exit_status = 128 + g_minishell.signal;
 	rl_clear_history();
 	while (g_minishell.envs)
 	{
@@ -157,5 +160,5 @@ int	main(int argc, char **argv, char **envp)
 		g_minishell.envs = g_minishell.envs->next;
 		free_env(tmp);
 	}
-	return (exit_status);
+	return (g_minishell.exit_status);
 }

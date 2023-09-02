@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 15:46:16 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/08/02 15:46:37 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:31:16 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	builtin_cd(t_cmd *cmd, t_env **envs)
 	if (path && path[0] == '~')
 		tilted_path(envs, &path);
 	if (!path)
-		return (EXIT_FAILURE);
+		return (0);
 	if (path[0])
 	{
 		if (chdir(path) == -1)

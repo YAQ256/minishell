@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:45:10 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/08/02 15:49:21 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:30:24 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,24 @@
 # include <string.h>
 # include <stdbool.h>
 # include <stddef.h>
+# include <dirent.h>
 # define HEREDOC_FILE ".heredoc"
+
+# define WRITE	1
+# define READ	0
+# define BUFF	4096
 
 typedef struct s_cmd
 {
-	char			*name;
 	char			**args;
-	int				infile;
-	int				outfile;
-	bool			has_heredoc;
-	bool			has_pipe;
-	pid_t			pid;
+	char			**cmd;		//bloque cmd
+	char			**infile;	//bloque de entrada
+	char			**outfile;	//bloque de salida
+	char			**dl_hd;	//Delmitadores el heredoc
+	char			*pth_hd;	//nombre dle archivo tmp
+	char			*pth_cmd;
+	char			*name_cmd;	//no lo uso
+	bool			has_pipe;	//no lo uso
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -58,23 +65,38 @@ typedef struct s_builtin
 typedef struct s_minishell
 {
 	bool	force_exit;
-	bool	heredoc;
+	bool	heredoc; //para que tu quieres eso
 	int		signal;
+	int		exit_status;
 	t_env	*envs;
 }	t_minishell;
 
 extern t_minishell	g_minishell;
 
 //==================builtins==================//
-int		builtin_echo(t_cmd *cmd, t_env **envs);
-int		builtin_env(t_cmd *cmd, t_env **envs);
 void	exit_arg(t_cmd *cmd);
+int		ft_builtin(t_cmd *cmd, t_env **env, int len);
+int		builtin_env(t_cmd *cmd, t_env **envs);
+int		builtin_echo(t_cmd *cmd, t_env **envs);
 int		builtin_exit(t_cmd *cmd, t_env **envs);
 int		builtin_pwd(t_cmd *cmd, t_env **envs);
 int		builtin_unset(t_cmd *cmd, t_env **envs);
 int		builtin_cd(t_cmd *cmd, t_env **envs);
-int		builtin_export(t_cmd *cmd, t_env **envs);
 void	error_identifier(char *identifier);
+int		is_builtin(t_cmd *cmd);
+int		builtin_export(t_cmd *cmds, t_env **env);
+void	print_env_list(t_env **env);
+int		process_argument(char *arg, t_env **envs);
+int		is_valid_identifier(char *arg);
+t_env	*sort_env_list(t_env **env);
+int		cmp_env_nodes(t_env *tmp1, t_env *tmp2);
+void	swap_env_nodes(t_env *tmp1, t_env *tmp2);
+t_env	*create_new_env_node(char *key_value);
+void	handle_argument_with_equals(char *arg, t_env **envs);
+void	handle_argument_without_equals(char *arg, t_env **envs);
+t_env	*find_env_node(t_env **env, char *key);
+void	add_env_node(t_env **env, t_env *new_node);
+void	free_env_node(t_env *node);
 //==================parsing==================//
 char	**format_env(t_env *envs);
 bool	handle_unexpected(char ***tokens);
@@ -109,7 +131,33 @@ char	*trim_token_quote(char **token);
 void	main_signal(int signal);
 void	heredoc_signal(int signal);
 void	cmd_signal(int signal);
-
+//==================exec==================//
+void	ft_init_exec(t_cmd **cmds, t_env **env);
+void	ft_init_heredoc(struct s_cmd *ps, t_env **envs);
+void	ft_break_down(struct s_cmd *ps);
+void	ft_pipe(int fd[2]);
+void	ft_infile(struct s_cmd *ps, int std);
+void	ft_outfile(struct s_cmd *ps, int std);
+void	ft_wait_for_childs(void);
+void	ft_free_cmd(t_cmd **cmds, char **envp);
+void	ft_free_double(char **str);
+pid_t	ft_fork(void);
+int		ft_lstlen(t_cmd *lst);
+int		ft_open(char *file, int flags);
+char	*ft_path(char **env);
+char	*ft_strjoin_gnl(char *stash, char *buff);
+bool	is_child_process(t_cmd *cmds); //ft de yaq
+void	cmds_has_pipes(t_cmd *cmds); //ft de yaq
+//char	*get_env_name(char *dest, const char *src);
+//int	env_value_len(const char *env);
+//char	*env_value(char *env);
+//char	*get_env_value(char *arg, t_env *env);
+//void	increment_shell_level(t_env *env);
+void	error_e(char *msg, char *more, int exit_status);
+void	sig_heredoc(void);
+void	sig_child(void);
+void	sig_parent(void);
+void	sig_ignore(void);
 
 //===SETTINGS 	COLORS===/
 //===Color font code===/

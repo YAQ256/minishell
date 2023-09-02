@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 14:33:16 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/07/10 14:33:36 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 08:33:21 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,17 @@ void	error(char *msg, char *more)
 	ft_putchar_fd('\n', STDERR_FILENO);
 }
 
-void	error_heredoc(char *delimiter)
+void	error_e(char *msg, char *more, int exit_status)
 {
-	ft_putstr_fd("minishell: warning: here-document ", STDERR_FILENO);
-	ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
-	ft_putstr_fd(delimiter, STDERR_FILENO);
-	ft_putstr_fd("')\n", STDERR_FILENO);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(msg, STDERR_FILENO);
+	if (more)
+	{
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(more, STDERR_FILENO);
+	}
+	ft_putchar_fd('\n', STDERR_FILENO);
+	exit (exit_status);
 }
 
 void	error_numerical_arg(char *name, char *arg)

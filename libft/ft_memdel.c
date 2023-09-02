@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   ft_memdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 11:14:38 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 08:31:55 by saazcon-         ###   ########.fr       */
+/*   Created: 2023/08/23 09:11:56 by cyacoub-          #+#    #+#             */
+/*   Updated: 2023/08/23 09:12:10 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	builtin_unset(t_cmd *cmd, t_env **envs)
+void	*ft_memdel(void *ptr)
 {
-	size_t	i;
-
-	i = 1;
-	while (cmd->args[i])
+	if (ptr)
 	{
-		if (!remove_env(envs, cmd->args[i]))
-			return (0);
-		i++;
+		free(ptr);
+		ptr = NULL;
 	}
-	return (EXIT_SUCCESS);
+	return (NULL);
 }
