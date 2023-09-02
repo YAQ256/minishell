@@ -6,7 +6,7 @@
 /*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:45:10 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 08:30:24 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:05:10 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	cmd_signal(int signal);
 //==================exec==================//
 void	ft_init_exec(t_cmd **cmds, t_env **env);
 void	ft_init_heredoc(struct s_cmd *ps, t_env **envs);
-void	ft_break_down(struct s_cmd *ps);
+void	ft_init_break(struct s_cmd *ps, char **envp);
 void	ft_pipe(int fd[2]);
 void	ft_infile(struct s_cmd *ps, int std);
 void	ft_outfile(struct s_cmd *ps, int std);
@@ -144,7 +144,7 @@ void	ft_free_double(char **str);
 pid_t	ft_fork(void);
 int		ft_lstlen(t_cmd *lst);
 int		ft_open(char *file, int flags);
-char	*ft_path(char **env);
+int		ft_path(char **env);
 char	*ft_strjoin_gnl(char *stash, char *buff);
 bool	is_child_process(t_cmd *cmds); //ft de yaq
 void	cmds_has_pipes(t_cmd *cmds); //ft de yaq
@@ -158,6 +158,7 @@ void	sig_heredoc(void);
 void	sig_child(void);
 void	sig_parent(void);
 void	sig_ignore(void);
+void	error_st(char *msg, char *more, int exit_status);
 
 //===SETTINGS 	COLORS===/
 //===Color font code===/

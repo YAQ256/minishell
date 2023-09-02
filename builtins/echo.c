@@ -6,7 +6,7 @@
 /*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:20:16 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 08:31:25 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:22:09 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	builtin_echo(t_cmd *cmd, t_env **envs)
 
 	(void)envs;
 	i = 1 + handle_options(cmd->args, &n_option);
-	while (cmd->args && cmd->args[i])
+	while (cmd && cmd->args && cmd->args[i])
 	{
 		if (cmd->args[i][0])
 		{

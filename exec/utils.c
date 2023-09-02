@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 16:37:38 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/02 02:20:06 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:10:21 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 pid_t	ft_fork(void)
 {
@@ -31,17 +31,19 @@ void	ft_pipe(int fd[2])
 		perror("pipe"); //mejorable
 }
 
-char	*ft_path(char **env)
+int	ft_path(char **env)
 {
 	int	i;
 
-	i = -1;
-	while (env[++i])
+	i = 0;
+	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-			return (env[i] + 5);
+			return (i);
+		i++;
 	}
-	return (NULL);
+	perror("There is no PATH defined in the enviroment\n"); //mejorable
+	return (i);
 }
 
 void	ft_wait_for_childs(void)
