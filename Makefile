@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+         #
+#    By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 11:51:51 by cyacoub-          #+#    #+#              #
-#    Updated: 2023/09/02 10:10:47 by saazcon-         ###   ########.fr        #
+#    Updated: 2023/09/04 16:39:54 by cyacoub-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME = minishell
 ## COMPILATION ##
 CC = gcc
-CFLAGS = -Wall -Wextra -g3 -fsanitize=address #-Werror
+CFLAGS = -Wall -Wextra #-g3 -fsanitize=address #-Werror
 READLINE_LIB= -L $(shell brew --prefix readline)/lib/ -lreadline -L . -lft
 READLINE_HEADER= -I . -I$(shell brew --prefix readline)/include/ -I include/
 ## INCLUDE ##
@@ -34,7 +34,7 @@ SRCS =	builtins/echo.c builtins/env.c builtins/exit.c builtins/pwd.c \
 		exec/exec.c exec/utils.c exec/redir.c exec/break.c \
 		builtins/builtin.c builtins/export/export.c \
 		builtins/export/export_utils.c builtins/export/export_utils2.c \
-		exec/utils2.c exec/heredoc.c
+		exec/utils2.c exec/heredoc.c parsing/exit_status_errors.c
 
 SRC_BONUS =	
 #SRCS = $(addprefix $(SRC_PATH), $(SRC))

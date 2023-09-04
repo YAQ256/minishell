@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:44:58 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 10:11:00 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:19:52 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,20 +111,17 @@ static int	program(t_cmd **cmds, t_env **envs)
 	while (1)
 	{
 		sig_parent();
-		//rl_getc_function = rl_getc; NO SE PARA QUE ES ESTA LINEA
 		if (!readentry(envs, cmds))
 			break ;
 		if (*cmds)
 		{
 			set_env(envs, "_", ft_strdup(last_cmd_arg(*cmds)));
-			// printtokens(cmds);
-			//Parte Salva:
-			ft_init_exec(cmds, envs); //hay que poner el init exec como int y meter que retorne el exit status y meterlo en esa variable
+			ft_init_exec(cmds, envs);
 		}
 		if (g_minishell.signal > 0)
 			g_minishell.exit_status = 128 + g_minishell.signal;
 		set_env(envs, "?", ft_itoa(g_minishell.exit_status));
-		if (g_minishell.force_exit /* || is_child_process(*cmds) */)
+		if (g_minishell.force_exit)
 			return (free_cmds(*cmds), g_minishell.exit_status);
 		free_cmds(*cmds);
 		g_minishell.signal = 0;
@@ -136,6 +133,7 @@ static int	program(t_cmd **cmds, t_env **envs)
 // {
 // 	system("leaks -q minishell");
 // }
+	// atexit(ft_leaks);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -144,12 +142,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	// atexit(ft_leaks);
 	g_minishell.force_exit = false;
 	g_minishell.signal = 0;
-	g_minishell.heredoc = false;
 	g_minishell.envs = init_envs(envp);
-	// increment_shell_level(g_minishell.envs);
 	g_minishell.exit_status = program(&cmds, &g_minishell.envs);
 	if (g_minishell.signal > 0)
 		g_minishell.exit_status = 128 + g_minishell.signal;

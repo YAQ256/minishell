@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 13:22:19 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/01 05:00:23 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:23:17 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,6 @@ void	ft_echo_env_pwd(t_cmd *cmd, t_env **env)
 		g_minishell.exit_status = builtin_env(cmd, env);
 	else if (ft_strcmp(cmd->name_cmd, "pwd") == 0)
 		g_minishell.exit_status = builtin_pwd(cmd, env);
-	/* if(g_minishell.exit_status == EXIT_FAILURE) //si meten opt en lo comando los tira como bien
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->name_cmd, 2);
-		ft_putstr_fd(" command not found\n", 2);
-	} */
 }
 
 void	ft_cd_exit_export_unset(t_cmd *cmd, t_env **env)
@@ -38,10 +32,6 @@ void	ft_cd_exit_export_unset(t_cmd *cmd, t_env **env)
 		g_minishell.exit_status = builtin_export(cmd, env);
 	else if (ft_strcmp(cmd->name_cmd, "unset") == 0)
 		g_minishell.exit_status = builtin_unset(cmd, env);
-	/* if(g_minishell.exit_status == EXIT_FAILURE) //si meten opt en lo comando los tira como bien
-	{
-		perror(cmd->name_cmd);
-	} */
 }
 
 int	ft_execute_built(t_cmd *cmd, t_env **env)

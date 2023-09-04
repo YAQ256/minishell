@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:18:33 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 08:33:13 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:37:00 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	**init_args(t_cmd *cmd, char **tokens, size_t start, size_t end)
+static char	**init_args(char **tokens, size_t start, size_t end)
 {
 	char	**args;
 	size_t	i;
-	(void)cmd;
 
 	args = (char **)ft_calloc(sizeof(char *), end - start + 1);
 	if (!args)
@@ -34,12 +33,12 @@ t_cmd	*new_cmd(char **tokens, size_t start, size_t end)
 {
 	t_cmd	*cmd;
 
-	cmd = (t_cmd *)ft_calloc(sizeof(t_cmd), 1); //cambie el tipo de reserva
+	cmd = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (NULL);
 	cmd->has_pipe = false;
 	cmd->next = NULL;
-	cmd->args = init_args(cmd, tokens, start, end);
+	cmd->args = init_args(tokens, start, end);
 	if (!cmd->args || !cmd->args[0])
 		return (free_cmds(cmd), NULL);
 	cmd->name_cmd = cmd->args[0];

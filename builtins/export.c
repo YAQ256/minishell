@@ -6,7 +6,7 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 15:48:15 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/08/02 15:48:41 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:23:36 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	error_identifier(char *identifier)
 	ft_putstr_fd(identifier, STDERR_FILENO);
 	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 }
+
 int	builtin_export(t_cmd *cmd, t_env **envs)
 {
 	size_t	i;

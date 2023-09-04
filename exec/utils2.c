@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 11:25:07 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 04:58:13 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:26:34 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,6 @@ char	*ft_strjoin_gnl(char *stash, char *buff)
 	return (str);
 }
 
-/* bool	is_child_process(t_cmd *cmds)
-{
-	while (cmds)
-	{
-		if (cmds->pid == 0)
-			return (true);
-		cmds = cmds->next;
-	}
-	return (false);
-} */
-
 void	cmds_has_pipes(t_cmd *cmds)
 {
 	t_cmd	*head;
@@ -95,10 +84,8 @@ void	ft_free_cmd(t_cmd **cmds, char **envp)
 	ps = *cmds;
 	if (envp)
 		ft_free_double(envp);
-	while(ps)
+	while (ps)
 	{
-		/* if (ps->args)
-			ft_free_double(ps->args) */;
 		if (ps->cmd)
 			ft_free_double(ps->cmd);
 		if (ps->infile)
@@ -107,13 +94,13 @@ void	ft_free_cmd(t_cmd **cmds, char **envp)
 			ft_free_double(ps->outfile);
 		if (ps->dl_hd)
 			ft_free_double(ps->dl_hd);
+		if (ps->pth_cmd)
+			free(ps->pth_cmd);
 		if (ps->pth_hd)
 		{
 			unlink(ps->pth_hd);
 			free(ps->pth_hd);
 		}
-		/* if (ps->name_cmd)
-			free(ps->name_cmd); */
 		ps = ps->next;
 	}
 }

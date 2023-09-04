@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:20:16 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 10:22:09 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 15:32:37 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ int	builtin_echo(t_cmd *cmd, t_env **envs)
 	size_t	i;
 
 	(void)envs;
-	i = 1 + handle_options(cmd->args, &n_option);
-	while (cmd && cmd->args && cmd->args[i])
+	i = 1 + handle_options(cmd->cmd, &n_option);
+	while (cmd && cmd->cmd && cmd->cmd[i])
 	{
-		if (cmd->args[i][0])
+		if (cmd->cmd[i][0])
 		{
-			if (!ft_putstr_fd(cmd->args[i], STDOUT_FILENO))
+			if (!ft_putstr_fd(cmd->cmd[i], STDOUT_FILENO))
 				return (error_write("echo"), EXIT_FAILURE);
-			if (cmd->args[i + 1])
+			if (cmd->cmd[i + 1])
 				if (!ft_putstr_fd(" ", STDOUT_FILENO))
 					return (error_write("echo"), EXIT_FAILURE);
 		}

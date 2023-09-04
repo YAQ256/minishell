@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:45:10 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 10:05:10 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:26:40 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 # include <stdbool.h>
 # include <stddef.h>
 # include <dirent.h>
-# define HEREDOC_FILE ".heredoc"
 
 # define WRITE	1
 # define READ	0
@@ -38,14 +37,14 @@
 typedef struct s_cmd
 {
 	char			**args;
-	char			**cmd;		//bloque cmd
-	char			**infile;	//bloque de entrada
-	char			**outfile;	//bloque de salida
-	char			**dl_hd;	//Delmitadores el heredoc
-	char			*pth_hd;	//nombre dle archivo tmp
+	char			**cmd;
+	char			**infile;
+	char			**outfile;
+	char			**dl_hd;
+	char			*pth_hd;
 	char			*pth_cmd;
-	char			*name_cmd;	//no lo uso
-	bool			has_pipe;	//no lo uso
+	char			*name_cmd;
+	bool			has_pipe;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -65,7 +64,6 @@ typedef struct s_builtin
 typedef struct s_minishell
 {
 	bool	force_exit;
-	bool	heredoc; //para que tu quieres eso
 	int		signal;
 	int		exit_status;
 	t_env	*envs;
@@ -135,12 +133,13 @@ void	cmd_signal(int signal);
 void	ft_init_exec(t_cmd **cmds, t_env **env);
 void	ft_init_heredoc(struct s_cmd *ps, t_env **envs);
 void	ft_init_break(struct s_cmd *ps, char **envp);
+void	ft_check_path(t_cmd *ps, char **envp);
 void	ft_pipe(int fd[2]);
 void	ft_infile(struct s_cmd *ps, int std);
 void	ft_outfile(struct s_cmd *ps, int std);
 void	ft_wait_for_childs(void);
-void	ft_free_cmd(t_cmd **cmds, char **envp);
 void	ft_free_double(char **str);
+void	ft_free_cmd(t_cmd **cmds, char **envp);
 pid_t	ft_fork(void);
 int		ft_lstlen(t_cmd *lst);
 int		ft_open(char *file, int flags);
@@ -148,17 +147,13 @@ int		ft_path(char **env);
 char	*ft_strjoin_gnl(char *stash, char *buff);
 bool	is_child_process(t_cmd *cmds); //ft de yaq
 void	cmds_has_pipes(t_cmd *cmds); //ft de yaq
-//char	*get_env_name(char *dest, const char *src);
-//int	env_value_len(const char *env);
-//char	*env_value(char *env);
-//char	*get_env_value(char *arg, t_env *env);
-//void	increment_shell_level(t_env *env);
 void	error_e(char *msg, char *more, int exit_status);
-void	sig_heredoc(void);
-void	sig_child(void);
-void	sig_parent(void);
-void	sig_ignore(void);
+void	sig_heredoc(void); //checkea
+void	sig_child(void); //checkea
+void	sig_parent(void); //checkea
+void	sig_ignore(void); //checkea
 void	error_st(char *msg, char *more, int exit_status);
+int		check_exit_status(t_cmd *cmd);
 
 //===SETTINGS 	COLORS===/
 //===Color font code===/

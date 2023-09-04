@@ -3,67 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   break.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 17:35:56 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/02 10:24:32 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:20:12 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_check_path(t_cmd *ps, char **envp)
+void	ft_check_cmd(struct s_cmd *ps, char **envp)
 {
-	int		i;
-	char	**env_path;
-	char	*path;
-	char	*path_cmd;
-	
-	i = ft_path(envp);
-	env_path = ft_split(envp[i] + 5, ':');
-	i = -1;
-	while (env_path[++i])
+	if (g_minishell.exit_status == 0)
 	{
-		path = ft_strjoin(env_path[i], "/");
-		path_cmd = ft_strjoin(path, ps->cmd[0]);
-		free(path);
-		if (access(path_cmd, X_OK) == 0)
+		if ((ps->cmd && !ps->cmd[0]))
+			error_st(ps->name_cmd, "command not found", 127);
+		else if ((ps->cmd && ps->cmd[0]) && (access(ps->cmd[0], X_OK) != 0))
+			ft_check_path(ps, envp);
+		else
 		{
-			ps->pth_cmd = ft_strdup(path_cmd);
-			free(path_cmd);
-			ft_free_double(env_path);
-			return (0); //exit
+			ps->pth_cmd = ft_strdup(ps->cmd[0]);
+			if (!ps->pth_cmd)
+				g_minishell.exit_status = 127;
 		}
-		free(path_cmd);
 	}
-	ft_free_double(env_path);
-	return (1); //fail
-}
-
-int	ft_check_cmd(struct s_cmd *ps, char **envp)
-{
-	if (access(ps->cmd[0], X_OK) != 0)
-		return (ft_check_path(ps, envp));
-	else
-	{
-		ps->pth_cmd = ft_strdup(ps->cmd[0]);
-		if (!ps->pth_cmd)
-			return (1); //mejorable
-		return (0);
-	}
-}
-
-void	ft_breack_check(struct s_cmd *ps, char **envp)
-{
-	if ((ps->cmd && !ps->cmd[0]) || (ft_check_cmd(ps, envp) != 0))
-		error_st(ps->name_cmd, "command not found", 127);
-	if (ps->infile && (!ps->infile[0] || !ps->infile[1]))
-		perror ("falla el infile");//g_minishell.exit_status = 127;
-	if (ps->outfile && (!ps->outfile[0] || !ps->outfile[1]))
-		perror ("falla el outfile");//g_minishell.exit_status = 127;
-	if (ps->infile && ps->infile[0][1] == '<' && ps->infile[0][0] == '<')
-		if (ps->dl_hd && !ps->dl_hd[0])
-			perror ("falla el heredoc, el dl");//g_minishell.exit_status = 127;		
 }
 
 void	ft_break_dl(struct s_cmd *ps, int *i)
@@ -89,32 +52,47 @@ void	ft_break_dl(struct s_cmd *ps, int *i)
 	free(aux);
 }
 
-void	ft_break_redir(struct s_cmd *ps, char **args, int *i) //no se para que esta la variable args, corrigelo cuando puedas.
+void	ft_break_redir(struct s_cmd *ps, char **args, int *i, char *aux)
 {
-	char	*aux;
 	int		file;
 
-	aux = ft_strjoin(args[*i], " ");
-	aux = ft_strjoin_gnl(aux, args[*i + 1]);
 	if (ps->args[*i][0] == '<')
 	{
+		if (ps->infile)
+			ft_free_double(ps->infile);
+		ps->infile = ft_split(aux, 32);
 		if (ps->args[*i][1] == '<')
 			ft_break_dl(ps, i);
 		else if (access(args[*i + 1], F_OK) == -1)
-			perror (args[*i]); //Gestionar mejor el error con exitstatus
-		ps->infile = ft_split(aux, 32);
+			error_st(ps->args[*i + 1], "No such file or directory", 1);
 	}
-	if (ps->args[*i][0] == '>')
+	else if (ps->args[*i][0] == '>')
 	{
+		if (ps->outfile)
+			ft_free_double(ps->outfile);
 		ps->outfile = ft_split(aux, 32);
-		file = ft_open(args[*i + 1], O_WRONLY | O_CREAT | O_TRUNC);
+		if (ps->args[*i][1] == '>')
+			file = ft_open(args[*i + 1], O_WRONLY | O_CREAT | O_APPEND);
+		else
+			file = ft_open(args[*i + 1], O_WRONLY | O_CREAT | O_TRUNC);
 		close(file);
 	}
-	(*i) += 2;
-	free(aux);
-	if ((ps->args[*i]) && (ps->args[*i + 1]) && (ps->args[*i][0] == '<' \
-	|| ps->args[*i][0] == '>'))
-		ft_break_redir(ps, args, i);
+}
+
+void	ft_check_redir(struct s_cmd *ps, int *i)
+{
+	char	*aux;
+
+	if (!ps->args[*i + 1])
+		g_minishell.exit_status = 258;
+	else
+	{
+		aux = ft_strjoin(ps->args[*i], " ");
+		aux = ft_strjoin_gnl(aux, ps->args[*i + 1]);
+		ft_break_redir(ps, ps->args, i, aux);
+		free(aux);
+		(*i) += 2;
+	}
 }
 
 void	ft_init_break(struct s_cmd *ps, char **envp)
@@ -122,17 +100,16 @@ void	ft_init_break(struct s_cmd *ps, char **envp)
 	char	*aux;
 	int		i;
 
-	while (ps)
+	while (ps && g_minishell.exit_status == 0)
 	{
 		aux = ft_calloc(sizeof(char), 1);
 		if (!aux)
 			return ;
 		i = 0;
-		while (ps->args[i])
+		while (ps->args[i] && g_minishell.exit_status == 0)
 		{
-			if ((ps->args[i + 1]) && (ps->args[i][0] == '<' \
-			|| ps->args[i][0] == '>'))
-				ft_break_redir(ps, ps->args, &i);
+			if ((ps->args[i][0] == '<' || ps->args[i][0] == '>'))
+				ft_check_redir(ps, &i);
 			else
 			{
 				aux = ft_strjoin_gnl(aux, ps->args[i]);
@@ -142,7 +119,7 @@ void	ft_init_break(struct s_cmd *ps, char **envp)
 		}
 		ps->cmd = ft_split(aux, 32);
 		free(aux);
-		ft_breack_check(ps, envp);
+		ft_check_cmd(ps, envp);
 		ps = ps->next;
 	}
 }

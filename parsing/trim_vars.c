@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_vars.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 14:31:43 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 08:34:03 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:38:01 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static char	*replace_env_var2(char *token, int key_len, t_env *head, int i)
 	char	*after;
 	char	*temp;
 
-	// printf("---------1---------%s\n", token);
 	before = ft_substr(token, 0, i);
 	after = ft_strdup(token + i + key_len);
 	temp = token;
@@ -34,7 +33,6 @@ static char	*replace_env_var2(char *token, int key_len, t_env *head, int i)
 	token = ft_strjoin(token, after);
 	free(temp);
 	free(after);
-	// printf("---------2---------%s\n", token);
 	return (token);
 }
 
@@ -45,7 +43,6 @@ static char	*replace_env_var_ext(char *token, int i,
 	size_t	key_len;
 	size_t	y;
 
-	// printf("---------3---------%s\n", token);
 	y = 0;
 	key_len = 1;
 	while (token[i + key_len] && !special_char(token[i + key_len]))
@@ -64,7 +61,6 @@ static char	*replace_env_var_ext(char *token, int i,
 			if (!isspace(token[y]))
 				*split_token = true;
 	}
-	// printf("---------4---------%s\n", token);
 	return (token);
 }
 

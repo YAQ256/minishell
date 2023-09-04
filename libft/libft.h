@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 19:01:23 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 08:32:47 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:35:37 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_lst		*ft_lstlast(t_lst *lst);
 void		ft_lstdelone(t_lst *lst, void (*del)(char*));
 void		ft_lstclear(t_lst **lst, void (*del)(char*));
 void		ft_lstiter(t_lst *lst, void *(*f)(char*));
-t_lst		*ft_lstmap(t_lst *lst, char* (f)(char*), void (*del)(char*));
+t_lst		*ft_lstmap(t_lst *lst, char *(f)(char*), void (*del)(char*));
 t_lst		*ft_lstseclast(t_lst *lst);
 int			ft_issign(char c);
 int			ft_isspace(char c);

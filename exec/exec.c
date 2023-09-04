@@ -3,28 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:47:36 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/02 10:05:49 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:39:18 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_check_path(t_cmd *ps, char **envp)
+{
+	int		i;
+	char	**env_path;
+	char	*path;
+	char	*path_cmd;
+
+	i = ft_path(envp);
+	env_path = ft_split(envp[i] + 5, ':');
+	i = -1;
+	while (env_path[++i])
+	{
+		path = ft_strjoin(env_path[i], "/");
+		path_cmd = ft_strjoin(path, ps->cmd[0]);
+		free(path);
+		if (access(path_cmd, X_OK) == 0)
+		{
+			ps->pth_cmd = ft_strdup(path_cmd);
+			free(path_cmd);
+			ft_free_double(env_path);
+			g_minishell.exit_status = 0;
+			return ;
+		}
+		free(path_cmd);
+	}
+	ft_free_double(env_path);
+	g_minishell.exit_status = 127;
+}
 
 void	ft_execute(struct s_cmd *ps, char **envp, int infile, int outfile)
 {
 	pid_t	pid;
 
 	pid = ft_fork();
+	//sig_ignore();
 	if (pid == 0)
 	{
+		sig_child();
 		ft_infile(ps, infile);
 		ft_outfile(ps, outfile);
-		//ft_cmd(ps, envp);
 		if (execve(ps->pth_cmd, ps->cmd, envp) == -1)
-			exit(0);
+			exit(126);
 	}
+	sig_parent();
 }
 
 int	ft_pipex(struct s_cmd *cmd, char **envp, int inhe)
@@ -39,6 +70,14 @@ int	ft_pipex(struct s_cmd *cmd, char **envp, int inhe)
 	return (pipex[READ]);
 }
 
+void	ft_exec_data(t_env **env, t_cmd *ps, char **envp, int *len)
+{
+	g_minishell.exit_status = 0;
+	ft_init_break(ps, envp);
+	ft_init_heredoc(ps, env);
+	*len = ft_lstlen(ps);
+}
+
 void	ft_init_exec(t_cmd **cmds, t_env **env)
 {
 	char	**envp;
@@ -47,10 +86,10 @@ void	ft_init_exec(t_cmd **cmds, t_env **env)
 	t_cmd	*ps;
 
 	ps = *cmds;
-	len = ft_lstlen(ps);
 	envp = format_env(*env);
-	ft_init_break(ps, envp);
-	ft_init_heredoc(ps, env);
+	ft_exec_data(env, ps, envp, &len);
+	if (g_minishell.exit_status != 0 && !check_exit_status(ps))
+		return ;
 	file = STDIN_FILENO;
 	while (ps)
 	{

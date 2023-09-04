@@ -6,13 +6,13 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:44:51 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/06/20 15:06:01 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:35:15 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_lst	*ft_lstmap(t_lst *lst, char* (f)(char*), void (*del)(char*))
+t_lst	*ft_lstmap(t_lst *lst, char *(f)(char*), void (*del)(char*))
 {
 	t_lst	*new_list;
 	t_lst	*new_node;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 14:34:30 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/02 08:37:05 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:22:38 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	main_signal(int signal)
 	g_minishell.signal = signal;
 	if (signal == SIGINT)
 	{
-		if (!g_minishell.heredoc)
-			write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();

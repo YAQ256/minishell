@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 16:37:38 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/02 10:10:21 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/04 15:44:22 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ pid_t	ft_fork(void)
 
 	pid = fork();
 	if (pid < 0)
-		perror("fork"); //mejorable
+		error_st("fork:", "Cannot allocate memory", 1);
 	return (pid);
 }
 
@@ -28,7 +28,7 @@ void	ft_pipe(int fd[2])
 
 	p = pipe(fd);
 	if (p < 0)
-		perror("pipe"); //mejorable
+		error_st("pipe:", "Too many open files", 1);
 }
 
 int	ft_path(char **env)
@@ -42,7 +42,7 @@ int	ft_path(char **env)
 			return (i);
 		i++;
 	}
-	perror("There is no PATH defined in the enviroment\n"); //mejorable
+		g_minishell.exit_status = 127;
 	return (i);
 }
 
