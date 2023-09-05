@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:47:36 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/04 17:39:18 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/05 18:18:40 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,14 @@ void	ft_execute(struct s_cmd *ps, char **envp, int infile, int outfile)
 	pid_t	pid;
 
 	pid = ft_fork();
-	//sig_ignore();
 	if (pid == 0)
 	{
-		sig_child();
+		//sig_child();
 		ft_infile(ps, infile);
 		ft_outfile(ps, outfile);
 		if (execve(ps->pth_cmd, ps->cmd, envp) == -1)
 			exit(126);
 	}
-	sig_parent();
 }
 
 int	ft_pipex(struct s_cmd *cmd, char **envp, int inhe)

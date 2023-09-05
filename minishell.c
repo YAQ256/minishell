@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:44:58 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/04 17:19:52 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/04 20:05:36 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static bool	readentry(t_env **envs, t_cmd **cmds)
 		return (false);
 	add_history(line);
 	if (line[0] == '\0')
-		return (free(line), true);
+		return (free(line), true); //creo que se dobla en ctrl c por esto
 	tokens = tokenize(line, *envs, NULL);
 	free(line);
 	if (!tokens)
@@ -108,7 +108,7 @@ static bool	readentry(t_env **envs, t_cmd **cmds)
 
 static int	program(t_cmd **cmds, t_env **envs)
 {
-	while (1)
+	while (1) //control D es igual a exit en texto
 	{
 		sig_parent();
 		if (!readentry(envs, cmds))

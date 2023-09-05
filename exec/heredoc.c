@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 07:01:44 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/04 16:33:51 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:42:46 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,24 @@ void	ft_heredoc(struct s_cmd *ps, int file, t_env **envs)
 
 	i = 0;
 	line = readline("> ");
-	while (line)
+	while (line != NULL)
 	{
+		//printf("line:%s\n", line);
 		if (ft_strncmp(line, ps->dl_hd[i], ft_strlen(line) + 1) == 0)
+		{
 			i++;
+			//exit(0);
+		}
 		else if (!ps->dl_hd[i + 1])
 			ft_heredoc_write(line, file, envs);
 		if (!ps->dl_hd[i])
 			break ;
 		free(line);
 		line = readline("> ");
+		//printf("%p\n", line);
 	}
 	free(line);
+	exit(1);
 }
 
 char	*ft_temp_name(void)
@@ -85,9 +91,10 @@ void	ft_init_heredoc(struct s_cmd *ps, t_env **envs)
 {
 	int		fd;
 	int		i;
+	int		status;
+	pid_t	pid;
 
 	i = 0;
-	sig_heredoc();
 	while (ps)
 	{
 		if (ps->infile && ps->infile[0][1] == '<' && ps->infile[0][0] == '<')
@@ -95,11 +102,16 @@ void	ft_init_heredoc(struct s_cmd *ps, t_env **envs)
 			ps->pth_hd = ft_temp_name();
 			if (!ps->pth_hd)
 				g_minishell.exit_status = 1;
-			fd = ft_open(ps->pth_hd, O_WRONLY | O_CREAT | O_TRUNC);
-			ft_heredoc(ps, fd, envs);
-			close(fd);
+			pid = ft_fork();
+			if (pid == 0)
+			{
+				sig_heredoc();
+				fd = ft_open(ps->pth_hd, O_WRONLY | O_CREAT | O_TRUNC);
+				ft_heredoc(ps, fd, envs);
+				close(fd);
+			}
+			ft_wait
 		}
 		ps = ps->next;
 	}
-	sig_parent();
 }

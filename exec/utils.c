@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 16:37:38 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/04 15:44:22 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:43:12 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,24 @@ int	ft_path(char **env)
 
 void	ft_wait_for_childs(void)
 {
+	sig_ignore();
 	while (1)
 	{
 		if (waitpid(-1, NULL, 0) == -1)
 			break ;
 	}
+}
+
+void	ft_wait_for_heredoc(void)
+{
+	sig_ignore();
+	waitpid(pid, &status, 0);
+	if (!WEXITSTATUS(status))
+	{
+		if(access(ps->pth_hd, F_OK) != -1)
+			unlink(ps->pth_hd);
+		fd = ft_open(ps->pth_hd, O_WRONLY | O_CREAT | O_TRUNC);
+		close(fd);
+	}
+	sig_parent();
 }

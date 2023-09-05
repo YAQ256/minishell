@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:45:10 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/04 16:26:40 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/05 18:04:36 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
