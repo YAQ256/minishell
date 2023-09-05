@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:45:10 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/05 18:04:36 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:51:48 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_minishell
 	bool	force_exit;
 	int		signal;
 	int		exit_status;
+	char	*old_path;
 	t_env	*envs;
 }	t_minishell;
 
@@ -139,6 +140,7 @@ void	ft_pipe(int fd[2]);
 void	ft_infile(struct s_cmd *ps, int std);
 void	ft_outfile(struct s_cmd *ps, int std);
 void	ft_wait_for_childs(void);
+void	ft_wait_for_heredoc(struct s_cmd *ps, pid_t	pid);
 void	ft_free_double(char **str);
 void	ft_free_cmd(t_cmd **cmds, char **envp);
 pid_t	ft_fork(void);

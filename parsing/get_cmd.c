@@ -6,7 +6,7 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:18:33 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/04 16:37:00 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:56:56 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,33 +91,3 @@ void	free_cmds(t_cmd *cmds)
 		free(tmp);
 	}
 }
-
-/* void	ft_free_lst_cmd(t_cmd **cmds, char **envp)
-{
-	struct s_cmd	*n;
-	struct s_cmd	*aux;
-
-	n = *cmds;
-	if (envp)
-		ft_free_double(envp);
-	while (n)
-	{
-		if (n->args)
-			ft_free_double(n->args);
-		if (n->cmd)
-			ft_free_double(n->cmd);
-		if (n->infile)
-			ft_free_double(n->infile);
-		if (n->outfile)
-			ft_free_double(n->outfile);
-		if (n->dl_hd)
-			ft_free_double(n->outfile);
-		if (n->pth_hd)
-			free(n->pth_hd);
-		if (n->name_cmd)
-			free(n->name_cmd);
-		aux = n;
-		n = n->next;
-		free(aux);
-	}
-} */

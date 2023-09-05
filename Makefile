@@ -6,7 +6,7 @@
 #    By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 11:51:51 by cyacoub-          #+#    #+#              #
-#    Updated: 2023/09/04 16:39:54 by cyacoub-         ###   ########.fr        #
+#    Updated: 2023/09/05 19:49:50 by cyacoub-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME = minishell
 ## COMPILATION ##
 CC = gcc
-CFLAGS = -Wall -Wextra #-g3 -fsanitize=address #-Werror
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 READLINE_LIB= -L $(shell brew --prefix readline)/lib/ -lreadline -L . -lft
 READLINE_HEADER= -I . -I$(shell brew --prefix readline)/include/ -I include/
 ## INCLUDE ##

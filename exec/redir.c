@@ -6,7 +6,7 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 19:23:14 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/04 13:39:26 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:56:43 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_open(char *file, int flags)
 	return (fd);
 }
 
-void	ft_infile(struct s_cmd *ps, int std)
+void	ft_infile(t_cmd *ps, int std)
 {
 	if (ps->infile && ps->infile[0][0] == '<')
 	{
@@ -40,7 +40,7 @@ void	ft_infile(struct s_cmd *ps, int std)
 	}
 }
 
-void	ft_outfile(struct s_cmd *ps, int std)
+void	ft_outfile(t_cmd *ps, int std)
 {
 	if (ps->outfile && ps->outfile[0][0] == '>')
 	{

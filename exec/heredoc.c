@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 07:01:44 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/05 19:42:46 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:56:30 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static	void	ft_heredoc_write(char *ln, int file, t_env **envs)
 	write(file, "\n", 1);
 }
 
-void	ft_heredoc(struct s_cmd *ps, int file, t_env **envs)
+void	ft_heredoc(t_cmd *ps, int file, t_env **envs)
 {
 	char	*line;
 	int		i;
@@ -45,19 +45,14 @@ void	ft_heredoc(struct s_cmd *ps, int file, t_env **envs)
 	line = readline("> ");
 	while (line != NULL)
 	{
-		//printf("line:%s\n", line);
 		if (ft_strncmp(line, ps->dl_hd[i], ft_strlen(line) + 1) == 0)
-		{
 			i++;
-			//exit(0);
-		}
 		else if (!ps->dl_hd[i + 1])
 			ft_heredoc_write(line, file, envs);
 		if (!ps->dl_hd[i])
 			break ;
 		free(line);
 		line = readline("> ");
-		//printf("%p\n", line);
 	}
 	free(line);
 	exit(1);
@@ -87,11 +82,10 @@ char	*ft_temp_name(void)
 	return (NULL);
 }
 
-void	ft_init_heredoc(struct s_cmd *ps, t_env **envs)
+void	ft_init_heredoc(t_cmd *ps, t_env **envs)
 {
 	int		fd;
 	int		i;
-	int		status;
 	pid_t	pid;
 
 	i = 0;
@@ -110,7 +104,7 @@ void	ft_init_heredoc(struct s_cmd *ps, t_env **envs)
 				ft_heredoc(ps, fd, envs);
 				close(fd);
 			}
-			ft_wait
+			ft_wait_for_heredoc(ps, pid);
 		}
 		ps = ps->next;
 	}

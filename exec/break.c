@@ -6,18 +6,20 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 17:35:56 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/04 17:20:12 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:59:11 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_check_cmd(struct s_cmd *ps, char **envp)
+void	ft_check_cmd(t_cmd *ps, char **envp)
 {
 	if (g_minishell.exit_status == 0)
 	{
 		if ((ps->cmd && !ps->cmd[0]))
-			error_st(ps->name_cmd, "command not found", 127);
+			g_minishell.exit_status = 127;
+		else if (is_builtin(ps))
+			return ;
 		else if ((ps->cmd && ps->cmd[0]) && (access(ps->cmd[0], X_OK) != 0))
 			ft_check_path(ps, envp);
 		else
@@ -29,7 +31,7 @@ void	ft_check_cmd(struct s_cmd *ps, char **envp)
 	}
 }
 
-void	ft_break_dl(struct s_cmd *ps, int *i)
+void	ft_break_dl(t_cmd *ps, int *i)
 {
 	char	*aux;
 	int		j;
@@ -52,7 +54,7 @@ void	ft_break_dl(struct s_cmd *ps, int *i)
 	free(aux);
 }
 
-void	ft_break_redir(struct s_cmd *ps, char **args, int *i, char *aux)
+void	ft_break_redir(t_cmd *ps, char **args, int *i, char *aux)
 {
 	int		file;
 
@@ -79,7 +81,7 @@ void	ft_break_redir(struct s_cmd *ps, char **args, int *i, char *aux)
 	}
 }
 
-void	ft_check_redir(struct s_cmd *ps, int *i)
+void	ft_check_redir(t_cmd *ps, int *i)
 {
 	char	*aux;
 
@@ -95,7 +97,7 @@ void	ft_check_redir(struct s_cmd *ps, int *i)
 	}
 }
 
-void	ft_init_break(struct s_cmd *ps, char **envp)
+void	ft_init_break(t_cmd *ps, char **envp)
 {
 	char	*aux;
 	int		i;
@@ -123,44 +125,3 @@ void	ft_init_break(struct s_cmd *ps, char **envp)
 		ps = ps->next;
 	}
 }
-
-/* void	ft_printf_list(struct s_cmd *t)
-{
-	int i;
-
-	printf("\n----------\n");
-	printf("Datos cmd:\n");
-	printf("----------\n");
-	printf("Cmd->");
-	i = 0;
-	while(t->cmd && t->cmd[i])
-	{
-		printf("%s ", t->cmd[i]);
-		i++;
-	}
-	printf("\n");
-	printf("infile-> ");
-	i = 0;
-	while(t->infile && t->infile[i])
-	{
-		printf("%s ", t->infile[i]);
-		i++;
-	}
-	printf("\n");
-	printf("outfile-> ");
-	i = 0;
-	while(t->outfile && t->outfile[i])
-	{
-		printf("%s ", t->outfile[i]);
-		i++;
-	}
-	printf("\n");
-	printf("delimitadores-> ");
-	i = 0;
-	while(t->dl_hd && t->dl_hd[i])
-	{
-		printf("%s ", t->dl_hd[i]);
-		i++;
-	}
-	printf("\n");
-} */

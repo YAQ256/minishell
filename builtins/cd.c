@@ -6,7 +6,7 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 15:46:16 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/04 11:27:19 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:48:05 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	builtin_cd(t_cmd *cmd, t_env **envs)
 	char		current[1024];
 
 	path = get_path(cmd, envs);
+	g_minishell.old_path = getcwd(current, 1024);
 	if (path && path[0] == '~')
 		tilted_path(envs, &path);
 	if (!path)
@@ -96,6 +97,8 @@ int	builtin_cd(t_cmd *cmd, t_env **envs)
 			error_invalid(path);
 			return (free(path), EXIT_FAILURE);
 		}
+		if (g_minishell.old_path)
+			set_env(envs, "OLDPWD", ft_strdup(g_minishell.old_path));
 		if (getcwd(current, 1024))
 			set_env(envs, "PWD", ft_strdup(current));
 	}

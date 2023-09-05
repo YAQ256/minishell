@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:47:36 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/05 18:18:40 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/05 20:42:11 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,22 @@ void	ft_check_path(t_cmd *ps, char **envp)
 	g_minishell.exit_status = 127;
 }
 
-void	ft_execute(struct s_cmd *ps, char **envp, int infile, int outfile)
+void	ft_execute(t_cmd *ps, char **envp, int infile, int outfile)
 {
 	pid_t	pid;
 
 	pid = ft_fork();
 	if (pid == 0)
 	{
-		//sig_child();
+		sig_child();
 		ft_infile(ps, infile);
 		ft_outfile(ps, outfile);
 		if (execve(ps->pth_cmd, ps->cmd, envp) == -1)
-			exit(126);
+			exit(1);
 	}
 }
 
-int	ft_pipex(struct s_cmd *cmd, char **envp, int inhe)
+int	ft_pipex(t_cmd *cmd, char **envp, int inhe)
 {
 	int	pipex[2];
 
@@ -86,7 +86,7 @@ void	ft_init_exec(t_cmd **cmds, t_env **env)
 	ps = *cmds;
 	envp = format_env(*env);
 	ft_exec_data(env, ps, envp, &len);
-	if (g_minishell.exit_status != 0 && !check_exit_status(ps))
+	if (g_minishell.exit_status != 0 && check_exit_status(ps))
 		return ;
 	file = STDIN_FILENO;
 	while (ps)

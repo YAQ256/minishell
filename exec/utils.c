@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 16:37:38 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/05 19:43:12 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/05 20:44:24 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,36 @@ int	ft_path(char **env)
 
 void	ft_wait_for_childs(void)
 {
+	int status;
+	
 	sig_ignore();
 	while (1)
 	{
-		if (waitpid(-1, NULL, 0) == -1)
-			break ;
+		if (waitpid(-1, &status, 0) == -1)
+		{
+			if (WTERMSIG(status) == 3)
+				g_minishell.exit_status = (128 + 3);
+			if (WIFSIGNALED(status))
+				write(1, "\n", 1);
+			break;
+		}
 	}
 }
 
-void	ft_wait_for_heredoc(void)
+void	ft_wait_for_heredoc(t_cmd *ps, pid_t	pid)
 {
+	int	fd;
+	int	status;
+
 	sig_ignore();
 	waitpid(pid, &status, 0);
 	if (!WEXITSTATUS(status))
 	{
-		if(access(ps->pth_hd, F_OK) != -1)
-			unlink(ps->pth_hd);
-		fd = ft_open(ps->pth_hd, O_WRONLY | O_CREAT | O_TRUNC);
-		close(fd);
+		if (access(ps->pth_hd, F_OK) != -1)
+		{
+			fd = ft_open(ps->pth_hd, O_WRONLY | O_CREAT | O_TRUNC);
+			close(fd);
+		}
 	}
 	sig_parent();
 }

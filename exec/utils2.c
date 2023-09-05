@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 11:25:07 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/05 17:49:00 by saazcon-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:54:44 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	ft_free_cmd(t_cmd **cmds, char **envp)
 			free(ps->pth_cmd);
 		if (ps->pth_hd)
 		{
-			if(access(ps->pth_hd, F_OK) != -1)
+			if (access(ps->pth_hd, F_OK) != -1)
 				unlink(ps->pth_hd);
 			free(ps->pth_hd);
 		}
