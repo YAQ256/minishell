@@ -6,7 +6,7 @@
 #    By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 11:51:51 by cyacoub-          #+#    #+#              #
-#    Updated: 2023/09/05 19:49:50 by cyacoub-         ###   ########.fr        #
+#    Updated: 2023/09/06 08:45:59 by cyacoub-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRCS =	builtins/echo.c builtins/env.c builtins/exit.c builtins/pwd.c \
 		exec/exec.c exec/utils.c exec/redir.c exec/break.c \
 		builtins/builtin.c builtins/export/export.c \
 		builtins/export/export_utils.c builtins/export/export_utils2.c \
-		exec/utils2.c exec/heredoc.c parsing/exit_status_errors.c
+		exec/utils2.c exec/heredoc.c parsing/exit_status_errors.c parsing/shlvl.c
 
 SRC_BONUS =	
 #SRCS = $(addprefix $(SRC_PATH), $(SRC))

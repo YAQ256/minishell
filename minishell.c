@@ -6,7 +6,7 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:44:58 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/05 20:50:41 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/06 08:48:25 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ static int	program(t_cmd **cmds, t_env **envs)
 // {
 // 	system("leaks -q minishell");
 // }
-	// atexit(ft_leaks);
+// 	atexit(ft_leaks);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -145,6 +145,7 @@ int	main(int argc, char **argv, char **envp)
 	g_minishell.force_exit = false;
 	g_minishell.signal = 0;
 	g_minishell.envs = init_envs(envp);
+	increment_shlvl(&g_minishell.envs);
 	g_minishell.exit_status = program(&cmds, &g_minishell.envs);
 	if (g_minishell.signal > 0)
 		g_minishell.exit_status = 128 + g_minishell.signal;

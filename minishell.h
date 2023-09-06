@@ -6,7 +6,7 @@
 /*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:45:10 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/05 19:51:48 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/06 08:44:16 by cyacoub-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ void	sig_parent(void); //checkea
 void	sig_ignore(void); //checkea
 void	error_st(char *msg, char *more, int exit_status);
 int		check_exit_status(t_cmd *cmd);
+void	increment_shlvl(t_env **env);
 
 //===SETTINGS 	COLORS===/
 //===Color font code===/
