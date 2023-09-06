@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 11:45:10 by cyacoub-          #+#    #+#             */
-/*   Updated: 2023/09/06 08:44:16 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:06:11 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@
 
 typedef struct s_cmd
 {
+	int				pipex[2];
+	pid_t			pid;
+	bool			ctl_c_hd;
+	bool			has_pipe;
 	char			**args;
 	char			**cmd;
 	char			**infile;
@@ -45,7 +49,6 @@ typedef struct s_cmd
 	char			*pth_hd;
 	char			*pth_cmd;
 	char			*name_cmd;
-	bool			has_pipe;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -139,8 +142,8 @@ void	ft_check_path(t_cmd *ps, char **envp);
 void	ft_pipe(int fd[2]);
 void	ft_infile(struct s_cmd *ps, int std);
 void	ft_outfile(struct s_cmd *ps, int std);
-void	ft_wait_for_childs(void);
-void	ft_wait_for_heredoc(struct s_cmd *ps, pid_t	pid);
+void	ft_wait_for_childs(t_cmd **cmds);
+void	ft_wait_for_heredoc(t_cmd *ps, pid_t	pid);
 void	ft_free_double(char **str);
 void	ft_free_cmd(t_cmd **cmds, char **envp);
 pid_t	ft_fork(void);

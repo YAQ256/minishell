@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+         #
+#    By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 11:51:51 by cyacoub-          #+#    #+#              #
-#    Updated: 2023/09/06 08:45:59 by cyacoub-         ###   ########.fr        #
+#    Updated: 2023/09/06 11:09:21 by saazcon-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME = minishell
 ## COMPILATION ##
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 READLINE_LIB= -L $(shell brew --prefix readline)/lib/ -lreadline -L . -lft
 READLINE_HEADER= -I . -I$(shell brew --prefix readline)/include/ -I include/
 ## INCLUDE ##

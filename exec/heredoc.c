@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 07:01:44 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/06 08:45:43 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/06 09:34:13 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,8 @@ char	*ft_temp_name(void)
 void	ft_init_heredoc(t_cmd *ps, t_env **envs)
 {
 	int		fd;
-	// int		i;
 	pid_t	pid;
 
-	// i = 0;
 	while (ps)
 	{
 		if (ps->infile && ps->infile[0][1] == '<' && ps->infile[0][0] == '<')

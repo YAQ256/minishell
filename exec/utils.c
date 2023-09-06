@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 16:37:38 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/05 20:44:24 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/06 10:38:34 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,36 @@ int	ft_path(char **env)
 	return (i);
 }
 
-void	ft_wait_for_childs(void)
+void	ft_wait_for_childs(t_cmd **cmds)
 {
-	int status;
-	
+	int		status;
+	t_cmd	*ps;
+
+	ps = *cmds;
 	sig_ignore();
-	while (1)
+	while(ps->next)
+		ps = ps->next;
+	if(ps->pid && ps->pid > 0)
 	{
-		if (waitpid(-1, &status, 0) == -1)
+		waitpid(ps->pid, &status, 0);
+		if (WIFSIGNALED(status))
 		{
-			if (WTERMSIG(status) == 3)
-				g_minishell.exit_status = (128 + 3);
-			if (WIFSIGNALED(status))
-				write(1, "\n", 1);
-			break;
+			if(ps->infile && ps->infile[0][0] == '<' && ps->infile[0][0] == '<'\
+			&& ps->ctl_c_hd == 1)
+				g_minishell.exit_status = 1;
+			else
+				g_minishell.exit_status = (128 + WTERMSIG(status));
+			if(WTERMSIG(status) == 3 && !ps->next)
+				write(1, "Quit: 3", 7);
+			write(1, "\n", 1);
 		}
 	}
+	while (1)
+	{
+		if (waitpid(-1, NULL, 0) == -1)
+			break;
+	}
+	sig_parent();
 }
 
 void	ft_wait_for_heredoc(t_cmd *ps, pid_t	pid)
@@ -71,12 +85,17 @@ void	ft_wait_for_heredoc(t_cmd *ps, pid_t	pid)
 
 	sig_ignore();
 	waitpid(pid, &status, 0);
-	if (!WEXITSTATUS(status))
+	if (WIFSIGNALED(status))
 	{
-		if (access(ps->pth_hd, F_OK) != -1)
+		if (WTERMSIG(status) == 2)
 		{
-			fd = ft_open(ps->pth_hd, O_WRONLY | O_CREAT | O_TRUNC);
-			close(fd);
+			g_minishell.exit_status = 1;
+			ps->ctl_c_hd = 1;
+			if (access(ps->pth_hd, F_OK) != -1)
+			{
+				fd = ft_open(ps->pth_hd, O_WRONLY | O_CREAT | O_TRUNC);
+				close(fd);
+			}
 		}
 	}
 	sig_parent();

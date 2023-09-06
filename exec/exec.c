@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyacoub- <cyacoub-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saazcon- <saazcon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:47:36 by saazcon-          #+#    #+#             */
-/*   Updated: 2023/09/05 20:42:11 by cyacoub-         ###   ########.fr       */
+/*   Updated: 2023/09/06 11:10:49 by saazcon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	ft_check_path(t_cmd *ps, char **envp)
 
 void	ft_execute(t_cmd *ps, char **envp, int infile, int outfile)
 {
-	pid_t	pid;
-
-	pid = ft_fork();
-	if (pid == 0)
+	ps->pid = ft_fork();
+	if (ps->pid == 0)
 	{
 		sig_child();
 		ft_infile(ps, infile);
 		ft_outfile(ps, outfile);
+		if(ps->next)
+			close(ps->pipex[READ]);
 		if (execve(ps->pth_cmd, ps->cmd, envp) == -1)
 			exit(1);
 	}
@@ -58,14 +58,12 @@ void	ft_execute(t_cmd *ps, char **envp, int infile, int outfile)
 
 int	ft_pipex(t_cmd *cmd, char **envp, int inhe)
 {
-	int	pipex[2];
-
-	ft_pipe(pipex);
-	ft_execute(cmd, envp, inhe, pipex[WRITE]);
-	close(pipex[WRITE]);
+	ft_pipe(cmd->pipex);
+	ft_execute(cmd, envp, inhe, cmd->pipex[WRITE]);
+	close(cmd->pipex[WRITE]);
 	if (inhe != STDIN_FILENO)
 		close(inhe);
-	return (pipex[READ]);
+	return (cmd->pipex[READ]);
 }
 
 void	ft_exec_data(t_env **env, t_cmd *ps, char **envp, int *len)
@@ -101,6 +99,6 @@ void	ft_init_exec(t_cmd **cmds, t_env **env)
 	}
 	if (file != STDIN_FILENO)
 		close(file);
-	ft_wait_for_childs();
+	ft_wait_for_childs(cmds);
 	ft_free_cmd(cmds, envp);
 }
